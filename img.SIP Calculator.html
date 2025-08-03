@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Use our Dream SIP Calculator Tool to visualise your financial goals. Calculate returns, plan SIPs, and secure your future easily.">
+  <meta name="keywords" content="SIP Calculator, SIP Goal Tool, Mutual Fund SIP, Investment Planner, SIP Return Calculator">
+  <meta name="author" content="YourSiteName">
+  <title>Visualise Your Dream Goal with SIP Calculator Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f4f8;
+    }
+    .header {
+      background-color: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .container {
+      max-width: 720px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    h2 {
+      text-align: center;
+      color: #003366;
+      margin-bottom: 24px;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 16px;
+      color: #333;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      background-color: #0077cc;
+      color: white;
+      padding: 14px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    .result {
+      background: #e6f3ff;
+      padding: 20px;
+      margin-top: 25px;
+      border-left: 5px solid #0077cc;
+      border-radius: 6px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    canvas {
+      margin-top: 30px;
+    }
+    .adsense {
+      margin: 40px auto;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #002b4d;
+      color: white;
+      margin-top: 60px;
+      font-size: 14px;
+    }
+    .faq {
+      background: #f9fcff;
+      border-top: 2px solid #d0e6f7;
+      padding: 30px;
+      margin-top: 40px;
+      border-radius: 10px;
+    }
+    .faq h3 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    .faq ul {
+      padding-left: 20px;
+    }
+    .faq li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    Visualise Your Dream Goal with SIP Calculator
+  </div>
+
+  <div class="container">
+    <h2>Plan Your Future with Confidence</h2>
+
+    <label for="monthly">Monthly SIP Amount (₹)</label>
+    <input type="number" id="monthly" placeholder="e.g. 5000" />
+
+    <label for="rate">Expected Annual Return (%)</label>
+    <input type="number" id="rate" placeholder="e.g. 12" />
+
+    <label for="years">Investment Duration (Years)</label>
+    <input type="number" id="years" placeholder="e.g. 10" />
+
+    <button onclick="calculateSIP()">Calculate Now</button>
+
+    <div class="result" id="result">
+      🔍 Enter details above and click "Calculate Now" to visualise your dream goal.
+    </div>
+
+    <canvas id="sipChart" height="260"></canvas>
+
+    <!-- Google AdSense Placeholder -->
+    <div class="adsense">
+      <!-- Replace below with your actual AdSense code -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+
+  <div class="container faq">
+    <h3>Frequently Asked Questions (FAQ)</h3>
+    <ul>
+      <li><strong>What is SIP?</strong> SIP stands for Systematic Investment Plan. It allows you to invest a fixed amount regularly in mutual funds.</li>
+      <li><strong>What is the maturity value?</strong> The final value of your investment after including compound returns over time.</li>
+      <li><strong>Is SIP good for long-term goals?</strong> Yes! SIPs are excellent for achieving financial goals like buying a house, child’s education, or retirement.</li>
+      <li><strong>How often should I review my SIP plan?</strong> You should review your SIP plan annually or whenever your financial goals change.</li>
+    </ul>
+  </div>
+
+  <footer>
+    &copy; 2025 YourSiteName — All rights reserved.
+  </footer>
+
+  <script>
+    function calculateSIP() {
+      const monthly = parseFloat(document.getElementById("monthly").value);
+      const rate = parseFloat(document.getElementById("rate").value) / 100 / 12;
+      const years = parseInt(document.getElementById("years").value);
+      const months = years * 12;
+
+      if (isNaN(monthly) || isNaN(rate) || isNaN(years)) {
+        document.getElementById("result").innerHTML = "❗ Please fill in all fields correctly.";
+        return;
+      }
+
+      let maturityValue = 0;
+      for (let i = 0; i < months; i++) {
+        maturityValue = (maturityValue + monthly) * (1 + rate);
+      }
+
+      const totalInvested = monthly * months;
+      const gain = maturityValue - totalInvested;
+
+      document.getElementById("result").innerHTML = `
+        💰 <strong>Total Invested:</strong> ₹${totalInvested.toFixed(2)}<br>
+        📈 <strong>Maturity Value:</strong> ₹${maturityValue.toFixed(2)}<br>
+        🎯 <strong>Wealth Gained:</strong> ₹${gain.toFixed(2)}
+      `;
+
+      drawChart(totalInvested, gain);
+    }
+
+    function drawChart(invested, gain) {
+      const ctx = document.getElementById('sipChart').getContext('2d');
+      if (window.myChart) {
+        window.myChart.destroy();
+      }
+      window.myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Invested Amount', 'Wealth Gain'],
+          datasets: [{
+            data: [invested, gain],
+            backgroundColor: ['#0052cc', '#00cc99'],
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'SIP Investment Breakdown',
+              font: {
+                size: 18
+              }
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
